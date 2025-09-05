@@ -16,6 +16,19 @@ class UserRepository{
         }
        
     }
+    async findUser(id){
+        try {
+            const response=await this.Usermodel.findByPk(id);
+            if(response==null){
+                throw new AppError("error","not able to find user",StatusCodes.BAD_REQUEST);
+            }
+        } catch (error) {
+            if(error instanceof AppError){
+                throw error;
+            }
+            throw new AppError("error","something went wrong",StatusCodes.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     async deleteUser(id){
         try {
