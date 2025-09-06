@@ -2,7 +2,7 @@ const fastify=require("fastify")();
 const serverConfig=require('./config/serverConfig');
 const app=require('./app');
 
-
+fastify.register(require('@fastify/multipart'));
 fastify.register(app);
 
 fastify.listen({ port: 3000, host: '0.0.0.0' },async function starting(err){
