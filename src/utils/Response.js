@@ -3,7 +3,6 @@ const SuccessResponse={
     message:"Sucessfully fetched the data",
     data:{},
     error:{},
-    statuscode
 }
 
 const ErrorResponse={
@@ -11,7 +10,6 @@ const ErrorResponse={
     message:"something went wrong",
     data:{},
     error:{},
-    statuscode
 }
 module.exports={
     SuccessResponse,
