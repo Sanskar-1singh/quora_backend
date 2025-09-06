@@ -6,6 +6,10 @@ async function userRoutes(fastify,options){
     fastify.get('/user/:id',userController.find);
     fastify.get('/user',userController.findall);
     fastify.delete('/user/:id',userController.deleteUser);
+
+
+    fastify.register(require('./questionRoutes'),{prefix:'/'});
+    
 }
 
 module.exports=userRoutes;  
