@@ -1,6 +1,6 @@
 const {questionController}=require('../../controllers');
 
-async function userRoutes(fastify,options){
+async function questionRoutes(fastify,options){
 
     fastify.post('/question',questionController.createQuestion);
     fastify.post('/question/:id',questionController.updateQuestion);
@@ -8,4 +8,4 @@ async function userRoutes(fastify,options){
     
 }
 
-module.exports=userRoutes;  
+module.exports=questionRoutes;  

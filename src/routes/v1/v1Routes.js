@@ -9,6 +9,7 @@ async function userRoutes(fastify,options){
 
     
     fastify.register(require('./questionRoutes'),{prefix:'/'});
+    fastify.register(require('./answerRoutes'),{prefix:'/'});
     
 }
 
