@@ -5,7 +5,7 @@ const { AppError } = require("../utils");
 const { StatusCodes } = require("http-status-codes");
 
 class questionRepository{
-      constructor(questions){
+      constructor(){
         this.model=questions;
     }
    
