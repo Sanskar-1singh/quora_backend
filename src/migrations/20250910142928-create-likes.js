@@ -14,7 +14,10 @@ module.exports = {
         allowNull:false
       },
       count: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        validate:{
+        min:0
+      }
       },
       referId: {
         type: Sequelize.INTEGER,

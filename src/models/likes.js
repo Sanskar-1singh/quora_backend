@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     count: {
       type:DataTypes.INTEGER,
+      validate:{
+        min:0
+      }
     },
     referId:{
       type:DataTypes.INTEGER,

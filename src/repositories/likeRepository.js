@@ -118,14 +118,23 @@ class likeRepository{
                 if(!check){
                     throw new AppError("error","likeable type answer not found",StatusCodes.BAD_REQUEST);
                 }
-                answer=await this.model.findByPk(Id);
+                answer=await this.model.findOne({
+                    where:{
+                        referId:Id,
+                        likeType: 'ANSWER'
+                    }
+                });
                 if(!answer){
                   throw new AppError("error","likeable type answer count not found",StatusCodes.BAD_REQUEST);
+                }
+                console.log(answer.count)
+                if(answer.count<=0){
+                     throw new AppError("error","likeable type answer count already zero",StatusCodes.BAD_REQUEST);
                 }
                 else{
                     const response=await this.model.decrement('count',{
                         by:1,
-                        where:{id:Id}
+                        where:{referId:Id,  likeType:data.likeType}
                     });
                     return response;
                 }
@@ -135,14 +144,49 @@ class likeRepository{
                 if(!check){
                     throw new AppError("error","likeable type question not found",StatusCodes.BAD_REQUEST);
                 }
-                question=await this.model.findByPk(Id);
+                  question=await this.model.findOne({
+                    where:{
+                        referId:Id,
+                        likeType: 'QUESTION'
+                    }
+                });
                 if(!question){
                      throw new AppError("error","likeable type question count not found",StatusCodes.BAD_REQUEST);
                 }
+                if(question.count==0){
+                     throw new AppError("error","likeable type question count already zero",StatusCodes.BAD_REQUEST);
+                }
                 else{
-                    const response=await this.model.increment('count',{
+                    const response=await this.model.decrement('count',{
                         by:1,
-                        where:{id:Id}
+                        where:{referId:Id,  likeType:data.likeType}
+                    });
+                    return response;
+                }
+             }
+
+             if(data.likeType=='COMMENT'){
+                     const check=await comments.findByPk(Id);
+                if(!check){
+                    throw new AppError("error","likeable type question not found",StatusCodes.BAD_REQUEST);
+                }
+                  comment=await this.model.findOne({
+                    where:{
+                        referId:Id,
+                        likeType: 'COMMENT'
+                    }
+                });
+                if(!comment){
+                     throw new AppError("error","likeable type comment count not found",StatusCodes.BAD_REQUEST);
+                }
+                console.log(comment)
+                if(comment.count==0){
+                     throw new AppError("error","likeable type comment count already zero",StatusCodes.BAD_REQUEST);
+                }
+                else{
+                    const response=await this.model.decrement('count',{
+                        by:1,
+                        where:{referId:Id,  likeType:data.likeType}
                     });
                     return response;
                 }

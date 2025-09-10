@@ -3,7 +3,7 @@ const { SuccessResponse, ErrorResponse } = require("../utils/Response");
 
 async function increaseLike(req,res){
     try {
-        console.log(req.body);
+        
         const response=await this.likeService.createLike(req.params.id,{...req.body});
         SuccessResponse.data=response;
         SuccessResponse.message=`Successfully updated the like for ${req.params.id}`; 
@@ -18,7 +18,8 @@ async function increaseLike(req,res){
 
 async function decreaseLike(req,res){
     try {
-        const response=await this.likeService.decreaseLike(req.params.id);
+        console.log(req.body);
+        const response=await this.likeService.decreaseLike(req.params.id,{...req.body});
         SuccessResponse.data=response;
         SuccessResponse.message=`Successfully updated the like for ${req.params.id}`; 
         return res.status(StatusCodes.OK).send(SuccessResponse);

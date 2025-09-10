@@ -13,9 +13,9 @@ class likeService{
         }
     }
 
-    async decreaseLike(id){
+    async decreaseLike(id,data){
         try {
-            const response=await this.repo.likedecrease(id);
+            const response=await this.repo.likedecrease(id,data);
             return response;
         } catch (error) {
             throw error;
