@@ -15,7 +15,6 @@ class likeRepository{
      //id is either questionid,answerId,comementId
     async likeincrease(Id,data){
         try {
-            console.log(data);
              let question=false;
              let answer=false;
              let comment=false;
@@ -42,7 +41,7 @@ class likeRepository{
                 else{
                     const response=await this.model.increment('count',{
                         by:1,
-                        where:{referId:Id}
+                        where:{referId:Id,likeType:'ANSWER'}
                     });
                     return response;
                 }
@@ -67,17 +66,18 @@ class likeRepository{
                 else{
                     const response=await this.model.increment('count',{
                         by:1,
-                        where:{referId:Id}
+                        where:{referId:Id,likeType:'QUESTION'}
                     });
                     return response;
                 }
              }
 
             else if(data.likeType=='COMMENT'){
-                     const check=await comments.findByPk(Id);
-                if(!check){
-                    throw new AppError("error","likeable type comment not found",StatusCodes.BAD_REQUEST);
-                }
+                console.log("oooo")
+                //      const check=await comments.findByPk(Id);
+                // if(!check){
+                //     throw new AppError("error","likeable type comment not found",StatusCodes.BAD_REQUEST);
+                // }
                  comment=await this.model.findOne({
                     where:{
                         referId:Id,
@@ -87,13 +87,15 @@ class likeRepository{
                 if(!comment){
                    data.referId=Id;
                     data.count=1;
+
+                    console.log(data.referId)
                     const response=await this.model.create(data);
                     return response;
                 }
                 else{
                     const response=await this.model.increment('count',{
                         by:1,
-                        where:{referId:Id}
+                        where:{referId:Id,likeType:'COMMENT'}
                     });
                     return response;
                 }
@@ -127,7 +129,6 @@ class likeRepository{
                 if(!answer){
                   throw new AppError("error","likeable type answer count not found",StatusCodes.BAD_REQUEST);
                 }
-                console.log(answer.count)
                 if(answer.count<=0){
                      throw new AppError("error","likeable type answer count already zero",StatusCodes.BAD_REQUEST);
                 }
@@ -153,7 +154,7 @@ class likeRepository{
                 if(!question){
                      throw new AppError("error","likeable type question count not found",StatusCodes.BAD_REQUEST);
                 }
-                if(question.count==0){
+                if(question.count<=0){
                      throw new AppError("error","likeable type question count already zero",StatusCodes.BAD_REQUEST);
                 }
                 else{
@@ -180,7 +181,7 @@ class likeRepository{
                      throw new AppError("error","likeable type comment count not found",StatusCodes.BAD_REQUEST);
                 }
                 console.log(comment)
-                if(comment.count==0){
+                if(comment.count<=0){
                      throw new AppError("error","likeable type comment count already zero",StatusCodes.BAD_REQUEST);
                 }
                 else{
@@ -204,11 +205,17 @@ class likeRepository{
         try {
             const response=await this.model.destroy({
                 where:{
-                    id:Id
+                    referId:Id
                 }
             });
+            if(!response){
+                throw new AppError("error","not able to find like to delete",StatusCodes.BAD_REQUEST);
+            }
            return response;
         } catch (error) {
+            if(error instanceof AppError){
+                throw error;
+            }
             throw error;
         }
     }

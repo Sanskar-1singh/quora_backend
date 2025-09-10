@@ -34,7 +34,7 @@ async function deleteLike(req,res){
     try {
         const response=await this.likeService.deleteLike(req.params.id);
         SuccessResponse.data=response;
-        SuccessResponse.message=`Successfully updated the like for ${req.params.id}`; 
+        SuccessResponse.message=`Successfully deleted the like for ${req.params.id}`; 
         return res.status(StatusCodes.OK).send(SuccessResponse);
 
     } catch (error) {

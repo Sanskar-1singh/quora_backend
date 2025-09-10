@@ -12,6 +12,7 @@ async function userRoutes(fastify,options){
     fastify.register(require('./questionRoutes'),{prefix:'/ques'});
     fastify.register(require('./answerRoutes'),{prefix:'/ans'});
     fastify.register(require('./likeRoutes'),{prefix:'/lk'});
+    fastify.register(require('./commentRoutes'),{prefix:'/cmt'});
     
 }
 
