@@ -79,5 +79,24 @@ class UserRepository{
             throw new AppError("error","something went wrong",StatusCodes.INTERNAL_SERVER_ERROR);
         }
     }
+
+    async removePicture(ids){
+        try {
+            const response=await this.Usermodel.update({ image: null },{
+                 where:{
+                       id:ids,
+                 }
+            });
+            if(response[0]==0){
+                throw new AppError("error","not able to remove pictures",StatusCodes.BAD_REQUEST);
+            }
+            return response;
+        } catch (error) {
+            if(error instanceof AppError){
+                throw error;
+            }
+            throw new AppError("error","something went wrong",StatusCodes.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
 module.exports=UserRepository;

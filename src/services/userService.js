@@ -26,6 +26,17 @@ class UserService{
             throw new AppError("error","something went wrong",StatusCodes.INTERNAL_SERVER_ERROR);
         }
     }
+    async deleteProfilepicture(id){
+        try {
+            const response=await this.repository.removePicture(id);
+            return response;
+        } catch (error) {
+            if(error instanceof AppError){
+                throw error;
+            }
+            throw new AppError("error","something went wrong",StatusCodes.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     async updateUser(id,data){
         try {

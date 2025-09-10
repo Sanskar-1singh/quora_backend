@@ -17,13 +17,10 @@ async function create(req, res) {
         fields[part.fieldname] = part.value; // text fields
       }
     }
-
-    if (!file) {
-      return res.status(StatusCodes.BAD_REQUEST).send({ message: "File is required" });
-    }
-
     // Convert file to buffer
-    const fileBuffer = await file.toBuffer();
+    let fileBuffer;
+    if(file){
+     await file.toBuffer();
     const key = `profiles/${Date.now()}_${file.filename}`;
 
     // Upload to S3
@@ -41,6 +38,7 @@ async function create(req, res) {
 
     // Add image URL to fields object
     fields.image = fileUrl;
+  }
 
     console.log("Final user data:", fields); // This is your req body equivalent
 
@@ -60,7 +58,47 @@ async function create(req, res) {
 
 async function update(req,res){
     try {
-        const response=await this.userService.updateUser(req.params.id,{...req.body});
+         let file;
+    const fields = {};
+
+    // Iterate over all parts (files + fields)
+    for await (const part of req.parts()) {
+      if (part.file) {
+        file = part; // pick the file part
+      } else {
+        fields[part.fieldname] = part.value; // text fields
+      }
+    }
+    // Convert file to buffer
+    let fileBuffer;
+    if(file){
+     await file.toBuffer();
+    const key = `profiles/${Date.now()}_${file.filename}`;
+
+    // Upload to S3
+    const command = new PutObjectCommand({
+      Bucket: serverConfig.AWS_BUCKET_NAME,
+      Key: key,
+      Body: fileBuffer,
+      ContentType: file.mimetype
+    });
+
+    await s3.send(command);
+
+    // Construct S3 URL
+    const fileUrl = `https://${serverConfig.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+
+    // Add image URL to fields object
+    fields.image = fileUrl;
+  }
+  if(fields.remove){
+    console.log("jksd");
+    const answer=await this.userService.deleteProfilepicture(req.params.id);
+        SuccessResponse.data=answer;
+        SuccessResponse.message="Successfully updated the user data";
+        return res.status(StatusCodes.OK).send(SuccessResponse);
+  }
+        const response=await this.userService.updateUser(req.params.id,fields);
         SuccessResponse.data=response;
         SuccessResponse.message="Successfully updated the user data";
         return res.status(StatusCodes.OK).send(SuccessResponse);

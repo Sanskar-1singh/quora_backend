@@ -5,8 +5,9 @@ const app=require('./app');
 fastify.register(require('@fastify/multipart'));
 fastify.register(app);
 
-fastify.listen({ port: 3000, host: '0.0.0.0' },async function starting(err){
+fastify.listen({ port: 8000, host: '0.0.0.0' },async function starting(err){
     if(err){
+        console.log(err);
         fastify.log.error(err);
     }
     console.log(`server started at port ${serverConfig.PORT}`);
