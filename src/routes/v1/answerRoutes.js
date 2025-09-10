@@ -6,7 +6,7 @@ async function answerRoutes(fastify,options){
 fastify.post('/answer',answerController.create);
 fastify.patch('/answer/:id',answerController.update);
 fastify.get('/answer/:id',answerController.findbyID);
-fastify.delete('/answer',answerController.deleteAns);
+fastify.delete('/answer/:que/:ans',answerController.deleteAns);
     
 }
 

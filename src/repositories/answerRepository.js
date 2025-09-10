@@ -10,16 +10,19 @@ class answerRepository{
 
     async createAnswer(data){
         try {
+            console.log(data)
             const response=await this.model.create(data);
+            console.log(response);
             return response;
         } catch (error) {
+            console.log(error);
              throw new AppError("error","not able to create entry in db",StatusCodes.INTERNAL_SERVER_ERROR);
         }
     }
 
     async updateAnswer(ids,data){
         try {
-            const respone=await this.model.update(data,{
+            const response=await this.model.update(data,{
                 where:{
                     id:ids,
                 }

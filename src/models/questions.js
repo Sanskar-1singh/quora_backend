@@ -17,7 +17,14 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.topics,{//todo to include that particular question can have many topics
                                     // but for now it can have just one topic>> version:0
         foreignKey:'topic_id'
-      })
+      });
+      this.hasMany(models.answers,{
+        foreignKey:'questionId',
+        
+      });
+      this.hasMany(models.comments,{
+        foreignKey:'referId'
+      });
     }
   }
   questions.init({

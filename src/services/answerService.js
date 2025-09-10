@@ -5,6 +5,7 @@ class answerService{
 
     async create(data){
         try {
+            console.log(data)
             const response=await this.repo.createAnswer(data);
             return response;
         } catch (error) {
