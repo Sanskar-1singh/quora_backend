@@ -15,6 +15,18 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey:'user_id',
         onDelete:'CASCADE'
       });
+
+      this.belongsToMany(models.user,{
+        through:'follows',
+          as: 'Followers',
+        foreignKey: 'followingId'
+      });
+
+      this.belongsToMany(models.user,{
+        through:'follows',
+        as: 'Followings',
+        foreignKey: 'followerId'
+      });
     }
   }
   user.init({

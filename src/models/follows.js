@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class likes extends Model {
+  class follows extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,28 +13,18 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  likes.init({
-    likeType:{ 
-      type:DataTypes.ENUM('ANSWER','QUESTION','COMMENT'),
+  follows.init({
+    followerId:{ 
+      type:DataTypes.NUMBER,
       allowNull:false
     },
-    count: {
-      type:DataTypes.INTEGER,
-      validate:{
-        min:0
-      }
-    },
-    referId:{
-      type:DataTypes.INTEGER,
-      allowNull:false
-    },
-    referType:{
-      type:DataTypes.ENUM('answers','questions','comments'),
+    followingId: {
+      type:DataTypes.NUMBER,
       allowNull:false
     }
   }, {
     sequelize,
-    modelName: 'likes',
+    modelName: 'follows',
   });
-  return likes;
+  return follows;
 };

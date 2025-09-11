@@ -85,6 +85,25 @@ class UserService{
             throw new AppError("error","something went wrong",StatusCodes.INTERNAL_SERVER_ERROR);
         }
     }
+
+    async startFollow(userId,followingId){
+        try {
+            const response=await this.repository.startFollow(userId,followingId);
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async findfollower(userId){
+        try {
+        
+            const response=await this.repository.findFollower(userId);
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports=UserService;

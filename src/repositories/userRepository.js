@@ -98,5 +98,39 @@ class UserRepository{
             throw new AppError("error","something went wrong",StatusCodes.INTERNAL_SERVER_ERROR);
         }
     }
+
+    async startFollow(userId,followingId){
+        try {
+            const user=await this.Usermodel.findByPk(userId);
+            const target=await this.Usermodel.findByPk(followingId);
+
+            if(!user || !target){
+                throw new AppError("error","targetUser or user is not present",StatusCodes.BAD_REQUEST);
+            }
+            const response=await user.addFollowing(target);
+            return response;
+        } catch (error) {
+            if(error instanceof AppError){
+                throw error;
+            }
+            throw new AppError("error","Something went wrong",StatusCodes.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    async findFollower(userId){
+        try {
+            const user=await this.Usermodel.findByPk(userId);
+            if(!user){
+                throw new AppError("error","user not find in db",StatusCodes.BAD_REQUEST);
+            }
+            const response=await user.getFollowers();
+            return response;
+        } catch (error) {
+            if(error instanceof AppError){
+                throw error;
+            }
+            throw new AppError("error","Something went wrong",StatusCodes.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
 module.exports=UserRepository;

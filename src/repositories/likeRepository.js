@@ -34,6 +34,7 @@ class likeRepository{
                     console.log("sdj")
                     data.referId=Id;
                     data.count=1;
+                    console.log(data)
                     const response=await this.model.create(data);
                     console.log(response)
                     return response;
@@ -74,10 +75,16 @@ class likeRepository{
 
             else if(data.likeType=='COMMENT'){
                 console.log("oooo")
-                //      const check=await comments.findByPk(Id);
-                // if(!check){
-                //     throw new AppError("error","likeable type comment not found",StatusCodes.BAD_REQUEST);
-                // }
+                //TODO DEBUG >>.
+                     const check=await comments.findOne({
+                        where:{
+                            id:Id
+                        }
+                     });
+                if(!check){
+                    throw new AppError("error","likeable type comment not found",StatusCodes.BAD_REQUEST);
+                }
+                console.log(check)
                  comment=await this.model.findOne({
                     where:{
                         referId:Id,

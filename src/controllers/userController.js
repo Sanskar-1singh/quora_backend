@@ -147,12 +147,36 @@ async function deleteUser(req,res){
     }
 }
 
+async function makeFollower(req,res){
+  try {
+    const response=await this.userService.startFollow(req.body.userId,req.body.followingId);
+    SuccessResponse.data=response;
+    SuccessResponse.message="Successfully added the follwer to the list for user";
+    return res.status(StatusCodes.OK).send(SuccessResponse);
+    } catch (error) {
+    ErrorResponse.error=error;
+    return res.status(error.statuscode || StatusCodes.BAD_REQUEST).send(ErrorResponse);
+  }
+}
 
 
+async function findAllFollower(req,res){
+  try {
+      const response=await this.userService.findfollower(req.params.userId);
+      SuccessResponse.data=response;
+      SuccessResponse.message="Successfully fetched all the follower";
+      return res.status(StatusCodes.OK).send(SuccessResponse);
+  } catch (error) {
+      ErrorResponse.error=error;
+      return res.status(error.statuscode || StatusCodes.BAD_REQUEST).send(ErrorResponse);
+  }
+}
 module.exports={
     create,
     update,
     find,
     findall,
-    deleteUser
+    deleteUser,
+    makeFollower,
+    findAllFollower
 }
